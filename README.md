@@ -20,3 +20,5 @@ Spring boot microservices with Clean &amp; Hexagonal architectures, DDD, SAGA, O
 - Kubernetes on local using Docker desktop
 
 - Kubernetes on Google Cloud using Google Kubernetes Engine(GKE)
+
+![project-overview](project-overview.png)
