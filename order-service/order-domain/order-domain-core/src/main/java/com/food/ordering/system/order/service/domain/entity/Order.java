@@ -49,7 +49,7 @@ public class Order extends AggregateRoot<OrderId> {
 
 	private void validateTotalPrice() {
 		if (price == null || !price.isGreaterThanZero()) {
-			throw new OrderDomainException("Total price must be greater than zero!")
+			throw new OrderDomainException("Total price must be greater than zero!");
 		}
 	}
 
@@ -70,6 +70,35 @@ public class Order extends AggregateRoot<OrderId> {
 			throw new OrderDomainException("Order item price: " + orderItem.getPrice().getAmout()
 				+ "is not valid for product " + orderItem.getProduct().getId().getValue());
 		}
+
+	}
+
+	public void pay() {
+		if (orderStatus != OrderStatus.PENDING) {
+			throw new OrderDomainException("Order is not in correct for pay operation!");
+		}
+		orderStatus = OrderStatus.PAID;
+	}
+
+	public void approve() {
+		if (orderStatus != OrderStatus.PAID) {
+			throw new OrderDomainException("Order is not in correct for approve operation!");
+		}
+		orderStatus = OrderStatus.APPROVED;
+	}
+
+	public void initCancel() {
+		if (orderStatus != OrderStatus.PAID) {
+			throw new OrderDomainException("Order is not in correct for initCancel operation!");
+		}
+		orderStatus = OrderStatus.CANCELLING;
+	}
+
+	public void cancel() {
+		if (!(orderStatus == OrderStatus.CANCELLING || orderStatus == OrderStatus.PENDING)) {
+			throw new OrderDomainException("Order is not in correct for cancel operation!");
+		}
+		orderStatus = OrderStatus.CANCELLED;
 	}
 
 	private Order(Builder builder) {
